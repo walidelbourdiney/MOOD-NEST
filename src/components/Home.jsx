@@ -17,7 +17,7 @@ const Home = () => {
     {
       icon: <FaHistory className="text-4xl text-[var(--color-primary)]" />,
       title: "Personal History",
-      description: "Save your favorite entries, filter by mood, and reflect on your emotional growth over time."
+      description: "View your complete journaling journey with a beautiful timeline, mood distribution charts, and the ability to filter entries by date and emotion."
     },
     {
       icon: <FaStar className="text-4xl text-[var(--color-primary)]" />,
