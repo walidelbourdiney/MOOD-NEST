@@ -19,6 +19,7 @@ const Journaling = () => {
     if (!favorites) {
       setFavorites(true);
       addFav(response, mood);
+      toast.success('Added to favorites');
     }
   };
 
@@ -46,90 +47,103 @@ const Journaling = () => {
   ];
 
   const handleAnalyze = async () => {
-    if (!entry.trim()) return alert("Please enter a journal entry!");
+    if (!entry.trim()) {
+      toast.error("Please enter a journal entry!");
+      return;
+    }
     setLoading(true);
     try {
-
       const aiResponse = await analyzeJournalEntry(entry);
       setResponse(aiResponse);
       addNote(aiResponse, mood);
       setEntry("");
       setFavorites(false);
-
     } catch (error) {
       console.error("AI Error:", error);
       setResponse("Oops! Something went wrong. Please try again. 💙");
-      
     }
     setLoading(false);
   };
 
   return (
-    <div className="max-w-5xl mx-auto my-24 p-6 text-center bg-[var(--color-bg)] rounded-xl shadow-lg">
-      <h1 className="text-2xl font-audiowide text-[var(--color-primary)] mb-4">
-        🌿 Mood Nest – Your Gentle Mood Journal 🌿
-      </h1>
+    <div className="max-w-3xl mx-auto my-16 p-8">
+      <div className="space-y-8">
+        {/* Welcome Message */}
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-medium text-[var(--color-primary)]">Welcome to Your Safe Space</h2>
+          <p className="text-[var(--color-text)] text-lg">
+            Take a moment to breathe and express yourself freely. No judgment, just understanding.
+          </p>
+        </div>
 
-      <h3 className="text-lg text-[var(--color-text)] mb-4">How do you feel right now?</h3>
-      <p className="my-6 text-lg text-[var(--color-accent)]">
-      {
-  mood === "Neutral"
-    ? "If you're feeling neutral, that's okay. You can start writing your journal right away, or choose an emoji that resonates with how you're feeling."
-    : mood
-    ? `You're feeling ${mood.toLowerCase()}`
-    : "Tap an emoji to share your mood"
-    }
-      </p>
-
-      <div className="flex flex-wrap justify-center gap-4 p-4 bg-[var(--color-bg-transparent)] rounded-lg shadow-md">
-  {feelings.map(({ name , emoji }) => (
-    <button
-      key={name}
-      onClick={() => setMood(name)}
-      className={`w-16 h-16 flex items-center justify-center text-2xl rounded-full border-2 border-[var(--color-secondary)] bg-[var(--color-bg)] shadow-md transition-transform duration-300 hover:scale-110 hover:bg-[var(--color-secondary)] hover:text-white focus:ring-4 focus:ring-[var(--color-secondary)] active:bg-[var(--color-primary)] ${
-        mood === name ? "ring-4 ring-[var(--color-primary)]" : ""
-      }`}
-    >
-      {emoji}
-    </button>
-  ))}
-</div>
-
-      
-      <h4 className="mt-6 text-lg text-[var(--color-text)] leading-relaxed">
-        Let your thoughts flow freely—this is a safe and gentle space for you to express whatever is on your heart 💚
-      </h4>
-
-      <textarea
-        rows="5"
-        className="w-full mt-4 p-4 text-lg rounded-md border border-[var(--color-secondary)] shadow-md bg-[var(--color-bg)] text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-secondary)]"
-        placeholder="Write about your thoughts and feelings..."
-        value={entry}
-        onChange={(e) => setEntry(e.target.value)}
-      />
-
-      <button
-        className="mt-4 px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-lg shadow-md transition hover:bg-[var(--color-secondary)] focus:ring-4 focus:ring-[var(--color-accent)] disabled:opacity-50"
-        onClick={handleAnalyze}
-        disabled={loading}
-      >
-        {loading ? "Analyzing..." : "Analyze Mood"}
-      </button>
-
-      {response && (
-        <div className="mt-6 p-6 bg-[var(--color-bg)] rounded-lg shadow-md text-left" ref={targetRef}>
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold text-[var(--color-secondary)] mb-2">🔮 A Gentle Perspective:</h3>
-            <FaHeart
-              className={`cursor-pointer text-2xl transition ${favorites ? "text-red-500" : "text-gray-400"}`}
-              onClick={addFavorite}
-            />
-          </div>
-          <div className={`bg-[var(--color-bg-transparent)] p-4 rounded-lg border border-[var(--color-accent)] text-[var(--color-text)] text-lg leading-relaxed ${resLoading ? "animate-pulse" : ""} duration-1000`}>
-            <ReactMarkdown>{response}</ReactMarkdown>
+        {/* Mood Selection */}
+        <div className="text-center space-y-4">
+          <h3 className="text-lg text-[var(--color-text)]">How are you feeling?</h3>
+          <p className="text-[var(--color-accent)] text-sm">
+            {mood === "Neutral" 
+              ? "Feeling neutral? That's perfectly fine! You can start writing right away."
+              : `You're feeling ${mood.toLowerCase()}. Take a moment to reflect on that.`}
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {feelings.map(({ name, emoji }) => (
+              <button
+                key={name}
+                onClick={() => setMood(name)}
+                className={`w-12 h-12 flex items-center justify-center text-xl rounded-full transition-all duration-200 ${
+                  mood === name 
+                    ? "bg-[var(--color-primary)] text-white scale-110" 
+                    : "bg-[var(--color-bg-transparent)] hover:bg-[var(--color-secondary)] hover:text-white"
+                }`}
+              >
+                {emoji}
+              </button>
+            ))}
           </div>
         </div>
-      )}
+
+        {/* Journal Entry */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <textarea
+              rows="6"
+              className="w-full p-4 text-lg rounded-lg bg-[var(--color-bg-transparent)] text-[var(--color-text)] border border-[var(--color-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all duration-200"
+              placeholder="Write whatever comes to mind. Your thoughts are safe here..."
+              value={entry}
+              onChange={(e) => setEntry(e.target.value)}
+            />
+            <p className="text-sm text-[var(--color-accent)] text-center">
+              Don't worry about perfect writing. Just let your thoughts flow naturally.
+            </p>
+          </div>
+          <button
+            className="w-full py-3 bg-[var(--color-primary)] text-white rounded-lg font-medium hover:bg-[var(--color-secondary)] transition-colors duration-200 disabled:opacity-50"
+            onClick={handleAnalyze}
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Reflect & Get Insights"}
+          </button>
+        </div>
+
+        {/* AI Response */}
+        {response && (
+          <div className="mt-8 space-y-4" ref={targetRef}>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-[var(--color-secondary)]">Your Personal Insights</h3>
+              <FaHeart
+                className={`cursor-pointer text-xl transition-colors duration-200 ${
+                  favorites ? "text-red-500" : "text-gray-400 hover:text-red-400"
+                }`}
+                onClick={addFavorite}
+              />
+            </div>
+            <div className={`bg-[var(--color-bg-transparent)] p-6 rounded-lg text-[var(--color-text)] ${
+              resLoading ? "animate-pulse" : ""
+            }`}>
+              <ReactMarkdown>{response}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
