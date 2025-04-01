@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonJournaling from "./ButtonJournaling";
-import { FaHeart, FaChartPie, FaCloudSun, FaHistory } from "react-icons/fa";
+import { FaHeart, FaChartPie, FaStar, FaHistory } from "react-icons/fa";
 
 const Home = () => {
   const features = [
@@ -15,14 +15,14 @@ const Home = () => {
       description: "Track your emotional journey with our intuitive emoji system and visualize patterns through beautiful charts."
     },
     {
-      icon: <FaCloudSun className="text-4xl text-[var(--color-primary)]" />,
-      title: "Weather Integration",
-      description: "Understand how weather affects your mood and track correlations between environmental factors and emotions."
-    },
-    {
       icon: <FaHistory className="text-4xl text-[var(--color-primary)]" />,
       title: "Personal History",
       description: "Save your favorite entries, filter by mood, and reflect on your emotional growth over time."
+    },
+    {
+      icon: <FaStar className="text-4xl text-[var(--color-primary)]" />,
+      title: "Save Favorites",
+      description: "Mark your most meaningful entries as favorites to easily revisit and reflect on important moments in your journey."
     }
   ];
 
