@@ -1,6 +1,7 @@
 import React from "react";
 import Journaling from "./components/Journaling";
 import Heading from "./components/Heading";
+import Home from "./components/Home";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -18,7 +19,7 @@ function App() {
     createRoutesFromElements(
       <Route>
         <Route path="/" element={<SiteLayout />}>
-          <Route index element={<Heading />} />
+          <Route index element={<Home />} />
           <Route path="/journaling" element={<Journaling />} />
           <Route path="/weather" element={<WeatherCheck />} />
           <Route path="/history" element={<JournalongHistory />} />
