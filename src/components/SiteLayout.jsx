@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, NavLink, Link  } from "react-router-dom";
+import { Outlet, NavLink, Link } from "react-router-dom";
 import {Toaster} from 'react-hot-toast';
 
 const SiteLayout = () => {
@@ -25,7 +25,7 @@ const SiteLayout = () => {
                   key={item}
                   to={path}
                   className={({ isActive }) =>
-                    (item === "Home" && location.pathname === "/") || isActive
+                    isActive
                       ? "text-[var(--color-primary)] font-semibold border-b-2 border-[var(--color-primary)] pb-1"
                       : "text-[var(--color-text)] hover:text-[var(--color-secondary)] transition-colors duration-300"
                   }

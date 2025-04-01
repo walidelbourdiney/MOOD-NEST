@@ -1,6 +1,5 @@
 import React from "react";
 import Journaling from "./components/Journaling";
-import Heading from "./components/Heading";
 import Home from "./components/Home";
 import {
   createBrowserRouter,
