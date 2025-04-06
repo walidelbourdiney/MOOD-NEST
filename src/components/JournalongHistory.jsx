@@ -53,7 +53,7 @@ const JournalingHistory = () => {
           </h2>
 
           {/* Pie Chart */}
-          <div className="w-full max-w-2xl min-h-[300px]">
+          <div className="w-9/12 max-w-2xl min-h-[300px]">
             <ResponsiveContainer width="100%" height={400}>
               <PieChart>
                 <Pie
