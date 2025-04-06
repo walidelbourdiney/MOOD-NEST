@@ -18,8 +18,8 @@ const SiteLayout = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            {["Home", "Journaling", "History", "Favorites", "Weather"].map((item) => {
-              const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+            {["Home", "Journaling", "History", "Favorites", "Weather", "About Us"].map((item) => {
+              const path = item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`;
               return (
                 <NavLink
                   key={item}
@@ -49,8 +49,9 @@ const SiteLayout = () => {
         {isOpen && (
           <div className="absolute top-16 left-0 w-full bg-[var(--color-bg)] shadow-lg transition-all duration-300 z-100">
             <div className="flex flex-col items-center py-4 space-y-4">
-              {["Home", "Journaling", "History", "Favorites", "Weather"].map((item) => {
-                const path = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+             
+              {["Home", "Journaling", "History", "Favorites", "Weather", "About Us"].map((item) => {
+                const path = item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`;
                 return (
                   <NavLink
                     key={item}

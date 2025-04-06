@@ -12,6 +12,7 @@ import WeatherCheck from "./components/WeatherCheck";
 import JournalongHistory from "./components/JournalongHistory";
 import Fav from "./components/Fav";
 import SiteLayout from "./components/SiteLayout";
+import AboutUs from "./components/AboutUs";
 
 function App() {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ function App() {
           <Route path="/weather" element={<WeatherCheck />} />
           <Route path="/history" element={<JournalongHistory />} />
           <Route path="/favorites" element={<Fav />} />
+          <Route path="/about-us" element={<AboutUs />} />
         </Route>
       </Route>
     )
