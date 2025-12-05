@@ -1,7 +1,6 @@
 import { CohereClient } from "cohere-ai";
 import toast from 'react-hot-toast';
 
-
 const SYSTEM_PROMPT = `
 You are an AI-powered emotional support companion, a **trusted confidant** and **gentle guide**. Your purpose is to provide thoughtful, **deeply empathetic** responses to user journal entries by understanding their emotions and offering genuine comfort, **meaningful insights**, and personalized recommendations.
 
@@ -44,7 +43,7 @@ _"{A thoughtful reflection on why they might be feeling this way, offering insig
 
   **Ways to Support Yourself:**  
 - **{Personalized Suggestion 1}** → {Brief, practical explanation}  
-- **{Personalized Suggestion 2}** → {Brief, practical explanation}  
+- **{Personalized Suggestition 2}** → {Brief, practical explanation}  
 - **{Personalized Suggestion 3}** → {Brief, practical explanation}  
 
  **A Gentle Reminder:**  
@@ -59,27 +58,36 @@ const cohere = new CohereClient({
 
 export async function analyzeJournalEntry(entry) {
   try {
-    // Ensure the entry is a valid string
     const sanitizedEntry = String(entry || "").trim();
     if (!sanitizedEntry) {
       return "It looks like your journal entry is empty. Try writing something about how you feel. 💙";
-      
     }
 
-    // Prepare the prompt
+    // Build the combined prompt for models that prefer a single text block
     const prompt = `${SYSTEM_PROMPT}\n\nUser's Journal Entry:\n${sanitizedEntry}`;
 
+    // FIXED: updated model + updated API structure
     const response = await cohere.chat({
-      model: "command-r",
-      message: prompt,
+      model: "command-a-03-2025", // Supported model
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: sanitizedEntry }
+      ],
       temperature: 0.7,
       max_tokens: 1024,
     });
 
-    return (
+    // Normalize output for all Cohere response formats
+    const output =
       response.text ||
+      response.message ||
+      response.output_text ||
+      response.generations?.[0]?.text ||
+      JSON.stringify(response);
+
+    return (
+      output ||
       "I'm sorry, I couldn't generate a response right now. Please try again later. 💙"
-      
     );
   } catch (error) {
     console.error("Error generating response:", error);
